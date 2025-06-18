@@ -51,15 +51,17 @@ export default {
       .then(data => {
         try {
           const parsed = JSON.parse(data.body);
-          this.slots = parsed.filter(slot => !slot.isBooked).map(slot => slot.slot);
+          this.slots = parsed
+            .filter(slot => !slot.isBooked)
+            .map(slot => slot.slot);
         } catch (err) {
-          console.error("Error parsing slots response:", err);
-          alert("Failed to load time slots.");
+          console.error("Error parsing slots:", err);
+          alert("Failed to load available time slots.");
         }
       })
       .catch(err => {
         console.error("Error fetching slots:", err);
-        alert("Error connecting to the server.");
+        alert("Error connecting to slots service.");
       });
   },
   methods: {
@@ -73,7 +75,7 @@ export default {
       fetch("https://3rkf1c5gp8.execute-api.us-east-1.amazonaws.com/AbdelRahman-Stage/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ body: JSON.stringify(payload) }) // keep this double wrapping if your Lambda expects it
+        body: JSON.stringify({ body: JSON.stringify(payload) }) // keep this wrapping if Lambda expects it
       })
         .then(res => res.json())
         .then(() => {
