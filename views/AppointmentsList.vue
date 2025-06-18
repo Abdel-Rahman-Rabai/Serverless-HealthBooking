@@ -18,7 +18,7 @@
               <tr>
                 <th>Name</th>
                 <th>Symptoms</th>
-                <th>Time Slot</th>
+                <th>Time</th>
                 <th>Status</th>
                 <th>Update</th>
               </tr>
@@ -30,12 +30,19 @@
                 <td>{{ appointment.slot }}</td>
                 <td>{{ appointment.status }}</td>
                 <td>
-                  <select class="form-select" :value="appointment.status" @change="e => updateStatus(appointment, e.target.value)">
+                  <select
+                    class="form-select"
+                    :value="appointment.status"
+                    @change="e => updateStatus(appointment, e.target.value)"
+                  >
                     <option>Pending</option>
                     <option>In Progress</option>
                     <option>Completed</option>
                   </select>
                 </td>
+              </tr>
+              <tr v-if="appointments.length === 0">
+                <td colspan="5" class="text-center text-muted">No appointments found.</td>
               </tr>
             </tbody>
           </table>
@@ -61,29 +68,31 @@ export default {
       fetch("https://3rkf1c5gp8.execute-api.us-east-1.amazonaws.com/AbdelRahman-Stage/appointments")
         .then(res => res.json())
         .then(data => {
-          const parsed = JSON.parse(data.body);
-          this.appointments = parsed;
+          try {
+            const parsed = JSON.parse(data.body);
+            this.appointments = parsed;
+          } catch (err) {
+            console.error("Error parsing appointments:", err);
+            alert("Failed to load appointments.");
+          }
+        })
+        .catch(err => {
+          console.error("Error fetching appointments:", err);
+          alert("Unable to connect to appointment service.");
         });
     },
     updateStatus(appointment, newStatus) {
-      const cleanAppointment = JSON.parse(JSON.stringify(appointment));
-      const appointmentId = cleanAppointment.appointmentId;
-
-      const url = `https://3rkf1c5gp8.execute-api.us-east-1.amazonaws.com/AbdelRahman-Stage/appointments/${appointmentId}`;
+      const url = `https://3rkf1c5gp8.execute-api.us-east-1.amazonaws.com/AbdelRahman-Stage/appointments/${appointment.appointmentId}`;
       const payload = { status: newStatus };
 
       fetch(url, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       })
         .then(async res => {
           const rawBody = await res.text();
-          if (!res.ok) {
-            throw new Error(`HTTP ${res.status}: ${rawBody}`);
-          }
+          if (!res.ok) throw new Error(`HTTP ${res.status}: ${rawBody}`);
           return JSON.parse(rawBody);
         })
         .then(() => {
@@ -91,7 +100,7 @@ export default {
         })
         .catch(err => {
           console.error("Failed to update status:", err);
-          alert("Update failed. See console for details.");
+          alert("Update failed. Check the console for details.");
         });
     }
   }
