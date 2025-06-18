@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <nav class="navbar navbar-light bg-white shadow-sm mb-4">
@@ -19,7 +18,7 @@
               <tr>
                 <th>Name</th>
                 <th>Symptoms</th>
-                <th>Time</th>
+                <th>Time Slot</th>
                 <th>Status</th>
                 <th>Update</th>
               </tr>
@@ -67,15 +66,10 @@ export default {
         });
     },
     updateStatus(appointment, newStatus) {
-      // Log the full appointment object and its ID
-      console.log(" appointment (proxy):", appointment);
       const cleanAppointment = JSON.parse(JSON.stringify(appointment));
-      console.log(" Clean appointment:", cleanAppointment);
-      console.log("appointmentId:", cleanAppointment.appointmentId);
-      console.log(" appointmentId (direct):", appointment.appointmentId);
+      const appointmentId = cleanAppointment.appointmentId;
 
-      const url = `https://3rkf1c5gp8.execute-api.us-east-1.amazonaws.com/AbdelRahman-Stage/appointments/${appointment.appointmentId}`;
-
+      const url = `https://3rkf1c5gp8.execute-api.us-east-1.amazonaws.com/AbdelRahman-Stage/appointments/${appointmentId}`;
       const payload = { status: newStatus };
 
       fetch(url, {
@@ -85,25 +79,21 @@ export default {
         },
         body: JSON.stringify(payload)
       })
-          .then(async res => {
-
-            const rawBody = await res.text();
-
-            if (!res.ok) {
-              throw new Error(`HTTP ${res.status}: ${rawBody}`);
-            }
-
-            return JSON.parse(rawBody);
-          })
-          .then(() => {
-            alert("Status updated!");
-          })
-          .catch(err => {
-            console.error(" Failed to update status:", err);
-            alert("Update failed. See console for details.");
-          });
+        .then(async res => {
+          const rawBody = await res.text();
+          if (!res.ok) {
+            throw new Error(`HTTP ${res.status}: ${rawBody}`);
+          }
+          return JSON.parse(rawBody);
+        })
+        .then(() => {
+          alert("Status updated!");
+        })
+        .catch(err => {
+          console.error("Failed to update status:", err);
+          alert("Update failed. See console for details.");
+        });
     }
-
-     }
+  }
 };
 </script>
