@@ -47,7 +47,7 @@ export default {
     };
   },
   mounted() {
-    fetch("https://3rkf1c5gp8.execute-api.us-east-1.amazonaws.com/AbdelRahman-Stage/slots")
+    fetch("https://j955qxd5xf.execute-api.us-east-1.amazonaws.com/Serverless-HealthBooking-stage/slots")
       .then(res => res.json())
       .then(data => {
         try {
@@ -73,7 +73,7 @@ export default {
         slot: this.selectedSlot
       };
 
-      fetch("https://3rkf1c5gp8.execute-api.us-east-1.amazonaws.com/AbdelRahman-Stage/appointments", {
+      fetch("https://j955qxd5xf.execute-api.us-east-1.amazonaws.com/Serverless-HealthBooking-stage/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ body: JSON.stringify(payload) }) // keep this wrapping if Lambda expects it
