@@ -14,6 +14,7 @@
           <div class="col-12">
             <input v-model="name" type="text" class="form-control" placeholder="Your Name" required />
           </div>
+          
           <div class="col-12">
             <input v-model="symptoms" type="text" class="form-control" placeholder="Symptoms" required />
           </div>
