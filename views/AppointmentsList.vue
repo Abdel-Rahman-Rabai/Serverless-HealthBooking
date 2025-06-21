@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     fetchAppointments() {
-      fetch("https://3rkf1c5gp8.execute-api.us-east-1.amazonaws.com/AbdelRahman-Stage/appointments")
+      fetch("https://j955qxd5xf.execute-api.us-east-1.amazonaws.com/Serverless-HealthBooking-stage/appointments")
         .then(res => res.json())
         .then(data => {
           try {
@@ -83,7 +83,7 @@ export default {
         });
     },
     updateStatus(appointment, newStatus) {
-      const url = `https://3rkf1c5gp8.execute-api.us-east-1.amazonaws.com/AbdelRahman-Stage/appointments/${appointment.appointmentId}`;
+      const url = `https://j955qxd5xf.execute-api.us-east-1.amazonaws.com/Serverless-HealthBooking-stage/appointments/${appointment.appointmentId}`;
       const payload = { status: newStatus };
 
       fetch(url, {
