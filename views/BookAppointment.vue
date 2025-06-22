@@ -46,7 +46,7 @@ export default {
     };
   },
   mounted() {
-    fetch("https://roiolthand.execute-api.us-east-1.amazonaws.com/AbdelRahman-stage/Slot")
+    fetch("https://5zxs996fqk.execute-api.us-east-1.amazonaws.com/AbdelRahman-stage/Slot")
       .then(res => res.json())
       .then(data => {
         const parsed = JSON.parse(data.body);
@@ -61,7 +61,7 @@ export default {
         slot: this.selectedSlot
       };
  
-      fetch("https://roiolthand.execute-api.us-east-1.amazonaws.com/AbdelRahman-stage/Appointments", {
+      fetch("https://5zxs996fqk.execute-api.us-east-1.amazonaws.com/AbdelRahman-stage/Appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ body: JSON.stringify(payload) })
